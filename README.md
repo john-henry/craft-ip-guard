@@ -45,6 +45,19 @@ if (IpRange::isPrivate($ip)) {
 }
 ```
 
+Name lookups come through `Dns`, which keeps a failed one quiet without reaching
+for `@`:
+
+```php
+use johnhenry\ipguard\Dns;
+
+$addresses = Dns::addressesFor($host);
+```
+
+A host that will not resolve is an ordinary answer to a guard like this, not a
+fault, so it comes back as an empty list. `Dns::records()` is there for a single
+record type where you want it.
+
 There is a second check for the site's own hostnames:
 
 ```php
