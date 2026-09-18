@@ -1,0 +1,26 @@
+{
+  "name": "johnhenry/craft-ip-guard",
+  "description": "Shared address classification for the SSRF guards in John Henry's Craft plugins.",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "John Henry",
+      "homepage": "https://johnhenry.ie"
+    }
+  ],
+  "require": {
+    "php": "^8.2",
+    "craftcms/cms": "^5.0.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "johnhenry\\ipguard\\": "src/"
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-main": "1.x-dev"
+    }
+  }
+}
