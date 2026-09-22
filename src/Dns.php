@@ -19,7 +19,7 @@ namespace johnhenry\ipguard;
  * for the length of the call only and taken down in a `finally`, so a throw
  * cannot leave the rest of the process without its own error reporting.
  *
- * @author JohnHenry <info@johnhenry.ie>
+ * @author John Henry Donovan <info@johnhenry.ie>
  * @since 1.1.0
  */
 class Dns
@@ -35,7 +35,7 @@ class Dns
      * @param int $type The `DNS_*` record type.
      * @return array<int, array<string, mixed>> The records, empty on failure.
      *
-     * @author JohnHenry <info@johnhenry.ie>
+     * @author John Henry Donovan <info@johnhenry.ie>
      * @since 1.1.0
      */
     public static function records(string $host, int $type): array
@@ -60,7 +60,7 @@ class Dns
      * @param string $host The hostname to resolve, brackets already stripped.
      * @return string[] The addresses, empty where nothing resolved.
      *
-     * @author JohnHenry <info@johnhenry.ie>
+     * @author John Henry Donovan <info@johnhenry.ie>
      * @since 1.1.0
      */
     public static function addressesFor(string $host): array
