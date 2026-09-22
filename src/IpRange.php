@@ -152,15 +152,6 @@ class IpRange
     // =========================================================================
 
     /**
-     * Whether an address falls inside one of the reserved blocks named above.
-     *
-     * @param string $ip The address to test, already known to parse.
-     * @return bool True where the address is reserved.
-     *
-     * @author John Henry Donovan <info@johnhenry.ie>
-     * @since 1.0.0
-     */
-    /**
      * The IPv4 address carried inside an IPv6 one, where there is one.
      *
      * @param string $ip The address to unwrap, already known to parse.
@@ -191,6 +182,15 @@ class IpRange
         return null;
     }
 
+    /**
+     * Whether an address falls inside one of the reserved blocks named above.
+     *
+     * @param string $ip The address to test, already known to parse.
+     * @return bool True where the address is reserved.
+     *
+     * @author John Henry Donovan <info@johnhenry.ie>
+     * @since 1.0.0
+     */
     private static function _isInReservedRange(string $ip): bool
     {
         if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
