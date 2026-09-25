@@ -148,8 +148,76 @@ class IpRange
         return false;
     }
 
+    /**
+     * Whether a scheme, host and port are exactly the origin of one of this
+     * install's sites.
+     *
+     * Stricter than isOwnSiteHost(): another port on the same host is a
+     * different service, so it gets no exemption. And when Craft built the base
+     * URL from the request's Host header, whoever sent the request chose it, so
+     * nothing is exempt at all.
+     *
+     * @param string $scheme The scheme, `http` or `https`.
+     * @param string $host The hostname.
+     * @param int|null $port The port, or null for the scheme's default.
+     * @return bool True where the origin is one of this install's sites.
+     *
+     * @author John Henry Donovan <info@johnhenry.ie>
+     * @since 1.3.0
+     */
+    public static function isOwnSiteOrigin(string $scheme, string $host, ?int $port): bool
+    {
+        $request = Craft::$app->getRequest();
+
+        if ($request instanceof \craft\web\Request && $request->isWebAliasSetDynamically) {
+            return false;
+        }
+
+        $scheme = strtolower($scheme);
+        $host = strtolower(trim($host, " []"));
+        $port ??= self::_defaultPort($scheme);
+
+        foreach (Craft::$app->getSites()->getAllSites() as $site) {
+            $parts = parse_url((string)$site->getBaseUrl());
+
+            if (!is_array($parts) || !isset($parts['host'], $parts['scheme'])) {
+                continue;
+            }
+
+            $siteScheme = strtolower($parts['scheme']);
+
+            if (
+                $siteScheme === $scheme
+                && strtolower(trim($parts['host'], '[]')) === $host
+                && ($parts['port'] ?? self::_defaultPort($siteScheme)) === $port
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     // Private Methods
     // =========================================================================
+
+    /**
+     * The default port for a scheme.
+     *
+     * @param string $scheme The scheme.
+     * @return int|null The port, or null for a scheme without one.
+     *
+     * @author John Henry Donovan <info@johnhenry.ie>
+     * @since 1.3.0
+     */
+    private static function _defaultPort(string $scheme): ?int
+    {
+        return match ($scheme) {
+            'https' => 443,
+            'http' => 80,
+            default => null,
+        };
+    }
 
     /**
      * The IPv4 address carried inside an IPv6 one, where there is one.
